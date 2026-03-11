@@ -1,4 +1,4 @@
-# Where Is the car parked? 
+# Where is the car parked? 
 
 A simple mobile app to track and update the location of your car using **React Native** and **Expo**. The app displays the current saved location and allows updating it via GPS, with a map interface.
 
@@ -28,4 +28,5 @@ A simple mobile app to track and update the location of your car using **React N
 - **HTTP:** Axios
 
 ---
+
 
