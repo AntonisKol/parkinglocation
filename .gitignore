@@ -1,0 +1,53 @@
+# Node / JS
+node_modules/
+yarn.lock
+package-lock.json
+npm-debug.*
+yarn-debug.*
+yarn-error.*
+
+# Expo / React Native
+frontend/node_modules/
+frontend/.expo/
+frontend/dist/
+frontend/.env
+.expo/
+dist/
+web-build/
+
+# Native builds
+/ios
+/android
+*.jks
+*.p8
+*.p12
+*.key
+*.mobileprovision
+.kotlin/
+
+# Debug
+*.orig.*
+*.pem
+.DS_Store
+.metro-health-check*
+
+# Local environment files
+.env
+.env*.local
+
+# TypeScript
+*.tsbuildinfo
+
+# Python / backend
+**/__pycache__/
+**/*.pyc
+**/.venv/
+**/venv/
+**/env/
+backend/bin/
+backend/lib/
+backend/include/
+backend/pyvenv.cfg
+
+# Example / generated files
+app-example
