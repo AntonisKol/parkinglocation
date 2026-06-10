@@ -13,31 +13,28 @@ const api = axios.create({
   timeout: API_TIMEOUT_MS,
 });
 
-export function isSavedLocation(value: SavedLocationResponse): value is {
+export const isSavedLocation = (value: SavedLocationResponse): value is {
   latitude: number;
   longitude: number;
   timestamp: number | null;
-} {
-  return typeof value.latitude === "number" && typeof value.longitude === "number";
-}
+} => typeof value.latitude === "number" && typeof value.longitude === "number";
 
-export function isApiError(error: unknown): boolean {
-  return axios.isAxiosError(error);
-}
+export const isApiError = (error: unknown): boolean => axios.isAxiosError(error);
 
-export async function fetchSavedLocation(): Promise<SavedLocationResponse> {
+export const fetchSavedLocation =
+  async (): Promise<SavedLocationResponse> => {
   const response = await api.get<SavedLocationResponse>("/car-location");
 
   return response.data;
-}
+};
 
-export async function saveLocation(
+export const saveLocation = async (
   location: Coordinates,
-): Promise<SavedLocationResponse> {
+): Promise<SavedLocationResponse> => {
   const response = await api.post<SavedLocationResponse>(
     "/car-location",
     location,
   );
 
   return response.data;
-}
+};

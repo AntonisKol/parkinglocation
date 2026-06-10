@@ -1,8 +1,8 @@
 import { GEOLOCATION_TIMEOUT_MS } from "../config";
 import type { Coordinates } from "../types";
 
-export function getBrowserLocation(): Promise<Coordinates> {
-  return new Promise((resolve, reject) => {
+export const getBrowserLocation = (): Promise<Coordinates> =>
+  new Promise((resolve, reject) => {
     if (!navigator.geolocation) {
       reject(new Error("Geolocation is not supported by this browser."));
       return;
@@ -24,4 +24,3 @@ export function getBrowserLocation(): Promise<Coordinates> {
       },
     );
   });
-}

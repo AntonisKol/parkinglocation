@@ -17,11 +17,13 @@ type NominatimResponse = {
   address?: NominatimAddress;
 };
 
-export function formatCoordinates(location: Coordinates): string {
-  return `${location.latitude.toFixed(5)}, ${location.longitude.toFixed(5)}`;
-}
+export const formatCoordinates = (location: Coordinates): string =>
+  `${location.latitude.toFixed(5)}, ${location.longitude.toFixed(5)}`;
 
-async function fetchWithTimeout(url: URL, timeoutMs: number): Promise<Response> {
+const fetchWithTimeout = async (
+  url: URL,
+  timeoutMs: number,
+): Promise<Response> => {
   const controller = new AbortController();
   const timeoutId = window.setTimeout(() => {
     controller.abort();
@@ -34,9 +36,12 @@ async function fetchWithTimeout(url: URL, timeoutMs: number): Promise<Response> 
   } finally {
     window.clearTimeout(timeoutId);
   }
-}
+};
 
-function formatAddress(data: NominatimResponse, location: Coordinates): string {
+const formatAddress = (
+  data: NominatimResponse,
+  location: Coordinates,
+): string => {
   const address = data.address ?? {};
   const street = address.road ?? address.pedestrian ?? address.footway;
   const addressParts = [street, address.house_number].filter(Boolean);
@@ -44,9 +49,11 @@ function formatAddress(data: NominatimResponse, location: Coordinates): string {
   return addressParts.length > 0
     ? addressParts.join(" ")
     : data.display_name || formatCoordinates(location);
-}
+};
 
-export async function reverseGeocode(location: Coordinates): Promise<string> {
+export const reverseGeocode = async (
+  location: Coordinates,
+): Promise<string> => {
   const url = new URL("https://nominatim.openstreetmap.org/reverse");
   url.searchParams.set("format", "jsonv2");
   url.searchParams.set("lat", String(location.latitude));
@@ -59,12 +66,14 @@ export async function reverseGeocode(location: Coordinates): Promise<string> {
   }
 
   return formatAddress((await response.json()) as NominatimResponse, location);
-}
+};
 
-export async function describeLocation(location: Coordinates): Promise<string> {
+export const describeLocation = async (
+  location: Coordinates,
+): Promise<string> => {
   try {
     return await reverseGeocode(location);
   } catch {
     return formatCoordinates(location);
   }
-}
+};

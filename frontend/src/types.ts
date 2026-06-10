@@ -8,8 +8,3 @@ export type SavedLocationResponse = {
   longitude: number | null;
   timestamp: number | null;
 };
-
-export type SavedLocation = {
-  coordinates: Coordinates;
-  timestamp: number | null;
-};
