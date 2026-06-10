@@ -1,4 +1,4 @@
-export function formatLastUpdated(timestamp: number | null): string {
+export const formatLastUpdated = (timestamp: number | null): string => {
   if (!timestamp) {
     return "Not saved yet";
   }
@@ -7,4 +7,4 @@ export function formatLastUpdated(timestamp: number | null): string {
     dateStyle: "medium",
     timeStyle: "short",
   }).format(new Date(timestamp * 1000));
-}
+};

@@ -1,12 +1,14 @@
-import { ErrorMessage } from "./components/ErrorMessage";
-import { HeroSection } from "./components/HeroSection";
-import { LocationStatus } from "./components/LocationStatus";
-import { RefreshPanel } from "./components/RefreshPanel";
-import { UpdateLocationButton } from "./components/UpdateLocationButton";
-import { useParkingLocation } from "./hooks/useParkingLocation";
-import { formatLastUpdated } from "./utils/date";
+import {
+  ErrorMessage,
+  HeroSection,
+  LocationStatus,
+  RefreshPanel,
+  UpdateLocationButton,
+} from "./components";
+import { useParkingLocation } from "./hooks";
+import { formatLastUpdated } from "./utils";
 
-export default function App() {
+const App = () => {
   const {
     address,
     error,
@@ -28,15 +30,12 @@ export default function App() {
             isUpdating={isUpdating}
             onUpdateLocation={() => void updateLocation()}
           />
-
-          <p className="hint">
-            The page checks for changes every second, so a newly saved location
-            appears automatically on another open phone or browser.
-          </p>
         </div>
 
         <RefreshPanel lastUpdatedLabel={lastUpdatedLabel} />
       </section>
     </main>
   );
-}
+};
+
+export default App;

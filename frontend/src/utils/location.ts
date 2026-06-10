@@ -1,12 +1,11 @@
 import type { Coordinates, SavedLocationResponse } from "../types";
 
-export function getLocationKey(
+export const getLocationKey = (
   location: Coordinates,
   timestamp: SavedLocationResponse["timestamp"],
-): string {
-  return [
+): string =>
+  [
     location.latitude,
     location.longitude,
     timestamp ?? "missing-timestamp",
   ].join(":");
-}

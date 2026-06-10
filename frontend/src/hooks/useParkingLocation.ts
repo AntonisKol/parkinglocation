@@ -6,12 +6,11 @@ import {
   LOCATION_SERVICE_UNAVAILABLE,
   SAVE_LOCATION_UNAVAILABLE,
   saveLocation,
-} from "../api/locationApi";
+} from "../api";
 import { FAILED_REFRESH_INTERVAL_MS, REFRESH_INTERVAL_MS } from "../config";
-import { getBrowserLocation } from "../services/browserLocation";
-import { describeLocation } from "../services/geocoding";
+import { describeLocation, getBrowserLocation } from "../services";
 import type { Coordinates } from "../types";
-import { getLocationKey } from "../utils/location";
+import { getLocationKey } from "../utils";
 
 type ParkingLocationState = {
   address: string;
@@ -25,7 +24,7 @@ type ParkingLocationState = {
 const EMPTY_LOCATION_ADDRESS = "No parking location saved yet";
 const UNLOADED_LOCATION_ADDRESS = "No saved location loaded yet";
 
-export function useParkingLocation(): ParkingLocationState {
+export const useParkingLocation = (): ParkingLocationState => {
   const [address, setAddress] = useState(EMPTY_LOCATION_ADDRESS);
   const [lastUpdated, setLastUpdated] = useState<number | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -164,4 +163,4 @@ export function useParkingLocation(): ParkingLocationState {
     lastUpdated,
     updateLocation,
   };
-}
+};

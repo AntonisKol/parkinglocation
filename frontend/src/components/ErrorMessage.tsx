@@ -2,10 +2,5 @@ type ErrorMessageProps = {
   message: string | null;
 };
 
-export function ErrorMessage({ message }: ErrorMessageProps) {
-  if (!message) {
-    return null;
-  }
-
-  return <p className="error">{message}</p>;
-}
+export const ErrorMessage = ({ message }: ErrorMessageProps) =>
+  message ? <p className="error">{message}</p> : null;
