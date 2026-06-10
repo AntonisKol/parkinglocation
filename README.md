@@ -1,13 +1,13 @@
 # Where is the car parked? 
 
-A simple mobile app to track and update the location of your car using **React Native** and **Expo**. The app displays the current saved location and allows updating it via GPS, with a map interface.
+A simple React web app to track and update the location of your car. The app displays the current saved location, lets you update it from your browser GPS, and supports choosing a location on an interactive map.
 
 ---
 
 ## Features
 
 - Display current car location
-- Update location using device GPS
+- Update location using browser geolocation
 - View location on a map with a marker
 - Stores location in a backend server
 - Reverse geocoding to display the street and city
@@ -22,11 +22,21 @@ A simple mobile app to track and update the location of your car using **React N
 
 ## Tech Stack
 
-- **Frontend:** React Native, Expo SDK 54, TypeScript
-- **Backend:** Node.js + Express (hosted on Render)
-- **Maps:** react-native-maps, Expo Location
+- **Frontend:** React, Vite, TypeScript
+- **Backend:** FastAPI
+- **Maps:** Leaflet, OpenStreetMap
 - **HTTP:** Axios
 
 ---
+
+## Running the frontend
+
+```bash
+cd frontend
+npm install
+npm run dev
+```
+
+Set `VITE_BACKEND_URL` in `frontend/.env` to point at a different backend. If it is not set, the app uses the currently deployed backend.
 
 
