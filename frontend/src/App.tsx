@@ -263,15 +263,9 @@ export default function App() {
     <main className="app-shell">
       <section className="card">
         <div className="content">
-          <p className="eyebrow">Where is the car parked?</p>
-          <h1>Share your parking spot</h1>
-          <p className="description">
-            Open this link after parking and tap one button. Anyone else with
-            the page open will see the saved address refresh automatically.
-          </p>
 
           <div className="status-panel" aria-live="polite">
-            <span className="label">Saved car location</span>
+            <span className="label">Current car location</span>
             <strong>{isLoading ? "Loading saved location..." : address}</strong>
             {savedLocation ? (
               <span className="coordinates">Updated {lastUpdatedLabel}</span>
@@ -290,11 +284,7 @@ export default function App() {
               {isUpdating ? "Updating..." : "Update location"}
             </button>
           </div>
-
-          <p className="hint">
-            The page checks for changes every second, so a newly saved location
-            appears automatically on another open phone or browser.
-          </p>
+          <p>Auto-refreshes every second</p>
         </div>
 
         <div className="confirmation-panel" aria-label="Location confirmation">
@@ -303,7 +293,6 @@ export default function App() {
             {isLoading ? "Loading saved location..." : address}
           </p>
           <div className="confirmation-meta">
-            <span>Auto-refreshes every second</span>
             <span>{lastUpdatedLabel}</span>
           </div>
         </div>
