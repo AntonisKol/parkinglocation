@@ -105,7 +105,6 @@ h1 {
   font-size: 1.1rem;
 }
 
-.coordinates,
 .hint {
   color: #69798c;
   font-size: 0.95rem;
@@ -127,8 +126,7 @@ h1 {
   margin-top: 28px;
 }
 
-.primary-button,
-.secondary-button {
+.primary-button {
   min-height: 48px;
   padding: 0 22px;
   border-radius: 999px;
@@ -145,24 +143,10 @@ h1 {
   box-shadow: 0 12px 24px rgba(97, 123, 152, 0.28);
 }
 
-.secondary-button {
-  border: 1px solid rgba(97, 123, 152, 0.3);
-  background: #ffffff;
-  color: #2b3b4f;
-}
-
-.primary-button:not(:disabled):hover,
-.secondary-button:not(:disabled):hover {
-  transform: translateY(-1px);
-}
-
 .primary-button:not(:disabled):hover {
+  transform: translateY(-1px);
   background: #526a86;
   box-shadow: 0 16px 28px rgba(97, 123, 152, 0.32);
-}
-
-.secondary-button:not(:disabled):hover {
-  background: #f7f9fc;
 }
 
 .hint {
@@ -170,7 +154,7 @@ h1 {
   line-height: 1.6;
 }
 
-.confirmation-panel {
+.refresh-panel {
   display: flex;
   min-height: 520px;
   flex-direction: column;
@@ -181,38 +165,30 @@ h1 {
     linear-gradient(135deg, #dfe8f2 0%, #b9cfdf 100%);
 }
 
-.panel-label {
+.refresh-panel-spacer {
+  flex: 1;
+}
+
+.refresh-panel-footer {
   width: fit-content;
-  padding: 10px 14px;
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.52);
-  color: #526a86;
-  font-size: 0.78rem;
-  font-weight: 900;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-}
-
-.confirmation-address {
-  margin: 64px 0;
-  color: #0e1a2b;
-  font-size: clamp(2rem, 5vw, 4.25rem);
-  font-weight: 900;
-  line-height: 1;
-}
-
-.confirmation-meta {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 12px;
-}
-
-.confirmation-meta span {
-  padding: 12px 14px;
-  border-radius: 14px;
+  max-width: 100%;
+  padding: 16px 18px;
+  border-radius: 18px;
   background: rgba(255, 255, 255, 0.58);
   color: #2b3b4f;
+}
+
+.refresh-panel-footer p {
+  margin: 0;
   font-weight: 800;
+}
+
+.refresh-panel-footer time {
+  display: block;
+  margin-top: 8px;
+  color: #617b98;
+  font-size: 0.95rem;
+  font-weight: 700;
 }
 
 @media (max-width: 860px) {
@@ -234,12 +210,8 @@ h1 {
     max-width: 12ch;
   }
 
-  .confirmation-panel {
+  .refresh-panel {
     min-height: 360px;
     padding: 32px 24px;
-  }
-
-  .confirmation-address {
-    margin: 42px 0;
   }
 }
