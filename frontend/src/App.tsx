@@ -1,11 +1,11 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import axios from "axios";
 
-const BACKEND_URL =
-  import.meta.env.VITE_BACKEND_URL ?? "https://backend-adwr.onrender.com";
+const API_BASE_URL =
+  import.meta.env.VITE_BACKEND_URL ?? (import.meta.env.DEV ? "/api" : "");
 
 const REFRESH_INTERVAL_MS = 1000;
-const FAILED_REFRESH_INTERVAL_MS = 5000;
+const FAILED_REFRESH_INTERVAL_MS = 30000;
 const API_TIMEOUT_MS = 8000;
 const GEOCODE_TIMEOUT_MS = 5000;
 
@@ -21,7 +21,7 @@ type SavedLocationResponse = {
 };
 
 const api = axios.create({
-  baseURL: BACKEND_URL,
+  baseURL: API_BASE_URL,
   timeout: API_TIMEOUT_MS,
 });
 
@@ -132,7 +132,8 @@ export default function App() {
     try {
       const response = await api.get<SavedLocationResponse>("/car-location");
       setError((currentError) =>
-        currentError === "Backend not reachable. Check the API URL and try again."
+        currentError ===
+        "Location service unavailable. Start the backend or configure VITE_BACKEND_URL."
           ? null
           : currentError,
       );
@@ -163,9 +164,11 @@ export default function App() {
       }
       return true;
     } catch {
-      setError("Backend not reachable. Check the API URL and try again.");
+      setError(
+        "Location service unavailable. Start the backend or configure VITE_BACKEND_URL.",
+      );
       if (!lastLocationKeyRef.current) {
-        setAddress("Backend not reachable");
+        setAddress("No saved location loaded yet");
       }
       return false;
     } finally {
@@ -236,7 +239,9 @@ export default function App() {
       setAddress(await describeLocation(location));
     } catch (locationError) {
       if (axios.isAxiosError(locationError)) {
-        setError("Failed to update location. Check the backend and try again.");
+        setError(
+          "Could not save location because the location service is unavailable.",
+        );
       } else if (locationError instanceof Error && locationError.message) {
         setError(locationError.message);
       } else {
