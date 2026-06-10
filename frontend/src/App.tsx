@@ -17,13 +17,14 @@ const App = () => {
     lastUpdated,
     updateLocation,
   } = useParkingLocation();
+
   const lastUpdatedLabel = formatLastUpdated(lastUpdated);
 
   return (
     <main className="app-shell">
       <section className="card">
         <div className="content">
-          <HeroSection />
+
           <LocationStatus address={address} isLoading={isLoading} />
           <ErrorMessage message={error} />
           <UpdateLocationButton
