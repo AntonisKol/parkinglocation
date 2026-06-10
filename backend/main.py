@@ -12,7 +12,6 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# In-memory storage
 car_location = {
     "latitude": None,
     "longitude": None,

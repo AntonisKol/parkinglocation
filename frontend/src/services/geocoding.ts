@@ -6,7 +6,6 @@ type NominatimAddress = {
   road?: string;
   pedestrian?: string;
   footway?: string;
-  city?: string;
   town?: string;
   village?: string;
   municipality?: string;
@@ -40,16 +39,10 @@ async function fetchWithTimeout(url: URL, timeoutMs: number): Promise<Response> 
 function formatAddress(data: NominatimResponse, location: Coordinates): string {
   const address = data.address ?? {};
   const street = address.road ?? address.pedestrian ?? address.footway;
-  const city =
-    address.city ??
-    address.town ??
-    address.village ??
-    address.municipality ??
-    address.county;
-  const addressParts = [street, address.house_number, city].filter(Boolean);
+  const addressParts = [street, address.house_number].filter(Boolean);
 
   return addressParts.length > 0
-    ? addressParts.join(" - ")
+    ? addressParts.join(" ")
     : data.display_name || formatCoordinates(location);
 }
 
