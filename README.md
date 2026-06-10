@@ -25,12 +25,30 @@ A simple React web app for sharing the parked car location. Open the link, tap *
 
 ## Running the frontend
 
+Start the backend first:
+
+```bash
+cd backend
+python -m venv .venv
+. .venv/bin/activate
+pip install -r requirements.txt
+uvicorn main:app --reload --port 8000
+```
+
+Then start the frontend in another terminal:
+
 ```bash
 cd frontend
 npm install
 npm run dev
 ```
 
-Set `VITE_BACKEND_URL` in `frontend/.env` to point at a different backend. If it is not set, the app uses the currently deployed backend.
+In development, Vite proxies `/api` to `http://127.0.0.1:8000`.
+
+Set `VITE_BACKEND_URL` in `frontend/.env` to point at a deployed backend instead:
+
+```bash
+VITE_BACKEND_URL=https://your-backend.example.com
+```
 
 

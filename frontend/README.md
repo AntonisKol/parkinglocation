@@ -4,6 +4,18 @@ This is a React and Vite frontend for sharing a car parking location. The page h
 
 ## Development
 
+Start the backend from the repository root:
+
+```bash
+cd backend
+python -m venv .venv
+. .venv/bin/activate
+pip install -r requirements.txt
+uvicorn main:app --reload --port 8000
+```
+
+Then start the frontend:
+
 ```bash
 npm install
 npm run dev
@@ -17,8 +29,8 @@ npm run build
 
 ## Configuration
 
-The app uses `https://backend-adwr.onrender.com` by default. To use another backend, create `frontend/.env`:
+In development, Vite proxies `/api` to `http://127.0.0.1:8000`. To use a deployed backend instead, create `frontend/.env`:
 
 ```bash
-VITE_BACKEND_URL=http://localhost:8000
+VITE_BACKEND_URL=https://your-backend.example.com
 ```
