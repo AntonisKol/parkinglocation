@@ -5,6 +5,9 @@ const BACKEND_URL =
   import.meta.env.VITE_BACKEND_URL ?? "https://backend-adwr.onrender.com";
 
 const REFRESH_INTERVAL_MS = 1000;
+const FAILED_REFRESH_INTERVAL_MS = 5000;
+const API_TIMEOUT_MS = 8000;
+const GEOCODE_TIMEOUT_MS = 5000;
 
 type Coordinates = {
   latitude: number;
@@ -19,6 +22,7 @@ type SavedLocationResponse = {
 
 const api = axios.create({
   baseURL: BACKEND_URL,
+  timeout: API_TIMEOUT_MS,
 });
 
 function isSavedLocation(value: SavedLocationResponse): value is {
@@ -39,7 +43,20 @@ async function reverseGeocode(location: Coordinates): Promise<string> {
   url.searchParams.set("lat", String(location.latitude));
   url.searchParams.set("lon", String(location.longitude));
 
-  const response = await fetch(url);
+  const controller = new AbortController();
+  const timeout = window.setTimeout(() => {
+    controller.abort();
+  }, GEOCODE_TIMEOUT_MS);
+
+  let response: Response;
+
+  try {
+    response = await fetch(url, {
+      signal: controller.signal,
+    });
+  } finally {
+    window.clearTimeout(timeout);
+  }
 
   if (!response.ok) {
     throw new Error("Reverse geocoding failed");
@@ -105,6 +122,7 @@ export default function App() {
   const [isLoading, setIsLoading] = useState(true);
   const [isUpdating, setIsUpdating] = useState(false);
   const lastLocationKeyRef = useRef<string | null>(null);
+  const refreshInFlightRef = useRef(false);
 
   const loadSavedLocation = useCallback(async (showLoading = false) => {
     if (showLoading) {
@@ -143,9 +161,13 @@ export default function App() {
         setLastUpdated(null);
         setAddress("No parking location saved yet");
       }
+      return true;
     } catch {
       setError("Backend not reachable. Check the API URL and try again.");
-      setAddress("Backend not reachable");
+      if (!lastLocationKeyRef.current) {
+        setAddress("Backend not reachable");
+      }
+      return false;
     } finally {
       if (showLoading) {
         setIsLoading(false);
@@ -154,14 +176,40 @@ export default function App() {
   }, []);
 
   useEffect(() => {
-    void loadSavedLocation(true);
+    let refreshTimer: number | undefined;
+    let isCancelled = false;
 
-    const refreshTimer = window.setInterval(() => {
-      void loadSavedLocation();
-    }, REFRESH_INTERVAL_MS);
+    const refresh = async (showLoading = false) => {
+      if (refreshInFlightRef.current) {
+        return;
+      }
+
+      refreshInFlightRef.current = true;
+
+      try {
+        const refreshSucceeded = await loadSavedLocation(showLoading);
+        const nextRefreshDelay = refreshSucceeded
+          ? REFRESH_INTERVAL_MS
+          : FAILED_REFRESH_INTERVAL_MS;
+
+        if (!isCancelled) {
+          refreshTimer = window.setTimeout(() => {
+            void refresh();
+          }, nextRefreshDelay);
+        }
+      } finally {
+        refreshInFlightRef.current = false;
+      }
+    };
+
+    void refresh(true);
 
     return () => {
-      window.clearInterval(refreshTimer);
+      isCancelled = true;
+
+      if (refreshTimer) {
+        window.clearTimeout(refreshTimer);
+      }
     };
   }, [loadSavedLocation]);
 
@@ -232,7 +280,7 @@ export default function App() {
               className="primary-button"
               type="button"
               onClick={updateLocation}
-              disabled={isLoading || isUpdating}
+              disabled={isUpdating}
             >
               {isUpdating ? "Updating..." : "Update location"}
             </button>
